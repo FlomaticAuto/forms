@@ -1,0 +1,4 @@
+# No build output for this repo — it is pure static HTML.
+# Keep this file to signal to GitHub that it is intentional.
+.DS_Store
+*.log

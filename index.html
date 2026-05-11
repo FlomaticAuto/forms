@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olympic Paints — Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>var t=localStorage.getItem('oly-theme');if(t)document.documentElement.className=t;</script>
+<style>
+/* ── RAW DESIGN TOKENS ─────────────────────────────────────────── */
+:root {
+  --_y50:#FEF9E0; --_y100:#FDF0A0; --_y200:#FAE04D;
+  --_y400:#F5C400; --_y600:#D4A800; --_y800:#A88000; --_y900:#6A5000;
+  --_n50:#E8EFF8; --_n100:#B8CCE8; --_n300:#6B9ED0;
+  --_n500:#2D6BA8; --_n700:#1A3D6E; --_n900:#0D2040; --_n950:#071022;
+  --_g0:#FFFFFF; --_g50:#F7F6F3; --_g100:#E8E7E2; --_g200:#C8C7C0;
+  --_g400:#949390; --_g600:#5C5B58; --_g800:#2E2E2C;
+  --_g900:#1A1A18; --_g950:#0D0D0B;
+  --_teal:#2D8C7A; --_teal-light:#C8EDE7; --_teal-dark:#1a5c50;
+  --_coral:#E86060; --_coral-light:#FDDCDC;
+  --font-display:'Barlow Condensed',sans-serif;
+  --font-body:'Barlow',sans-serif;
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:50px;
+}
+
+/* ── LIGHT THEME ──────────────────────────────────────────────── */
+.theme-light {
+  color-scheme:light;
+  --color-surface-page:var(--_g50); --color-surface-base:var(--_g0);
+  --color-surface-elevated:var(--_g0); --color-surface-sunken:var(--_g100);
+  --color-surface-overlay:rgba(0,0,0,0.04);
+  --color-surface-brand:var(--_y400); --color-surface-secondary:var(--_n700);
+  --color-text-primary:var(--_g950); --color-text-secondary:var(--_g600);
+  --color-text-tertiary:var(--_g400); --color-text-on-brand:var(--_g950);
+  --color-text-on-navy:var(--_g0);
+  --color-brand-primary:var(--_y400); --color-brand-hover:var(--_y600);
+  --color-brand-secondary:var(--_n700); --color-brand-accent:var(--_y400);
+  --color-border-subtle:var(--_g100); --color-border-default:var(--_g200);
+  --color-border-strong:var(--_g400); --color-border-brand:var(--_y400);
+  --color-success-bg:#EDF7F5; --color-success-fg:var(--_teal-dark); --color-success-bd:var(--_teal);
+  --color-warning-bg:var(--_y50); --color-warning-fg:var(--_y900); --color-warning-bd:var(--_y600);
+  --color-danger-bg:#FEF2F2; --color-danger-fg:#C0392B; --color-danger-bd:var(--_coral);
+  --color-info-bg:var(--_n50); --color-info-fg:var(--_n700); --color-info-bd:var(--_n500);
+  --color-neutral-bg:var(--_g100); --color-neutral-fg:var(--_g600); --color-neutral-bd:var(--_g400);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.08); --shadow-md:0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 10px 30px rgba(0,0,0,0.10); --shadow-brand:0 4px 16px rgba(245,196,0,0.20);
+}
+
+/* ── DARK THEME ───────────────────────────────────────────────── */
+.theme-dark {
+  color-scheme:dark;
+  --color-surface-page:var(--_g950); --color-surface-base:var(--_g900);
+  --color-surface-elevated:var(--_g800); --color-surface-sunken:var(--_g950);
+  --color-surface-overlay:rgba(255,255,255,0.04);
+  --color-surface-brand:var(--_y400); --color-surface-secondary:var(--_n700);
+  --color-text-primary:var(--_g100); --color-text-secondary:var(--_g400);
+  --color-text-tertiary:var(--_g600); --color-text-on-brand:var(--_g950);
+  --color-text-on-navy:var(--_g0);
+  --color-brand-primary:var(--_y400); --color-brand-hover:var(--_y200);
+  --color-brand-secondary:var(--_n700); --color-brand-accent:var(--_y400);
+  --color-border-subtle:rgba(255,255,255,0.06); --color-border-default:rgba(255,255,255,0.10);
+  --color-border-strong:rgba(255,255,255,0.20); --color-border-brand:var(--_y400);
+  --color-success-bg:rgba(45,140,122,0.12); --color-success-fg:var(--_teal-light); --color-success-bd:rgba(45,140,122,0.30);
+  --color-warning-bg:rgba(245,196,0,0.10); --color-warning-fg:var(--_y200); --color-warning-bd:rgba(245,196,0,0.25);
+  --color-danger-bg:rgba(232,96,96,0.12); --color-danger-fg:var(--_coral-light); --color-danger-bd:rgba(232,96,96,0.30);
+  --color-info-bg:rgba(26,61,110,0.30); --color-info-fg:var(--_n100); --color-info-bd:rgba(107,158,208,0.30);
+  --color-neutral-bg:rgba(255,255,255,0.05); --color-neutral-fg:var(--_g400); --color-neutral-bd:rgba(255,255,255,0.10);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.40); --shadow-md:0 4px 12px rgba(0,0,0,0.40);
+  --shadow-lg:0 10px 30px rgba(0,0,0,0.50); --shadow-brand:0 4px 20px rgba(245,196,0,0.15);
+}
+
+/* ── BRAND THEME ──────────────────────────────────────────────── */
+.theme-brand {
+  color-scheme:light;
+  --color-surface-page:var(--_y400); --color-surface-base:var(--_y200);
+  --color-surface-elevated:var(--_y50); --color-surface-sunken:var(--_y600);
+  --color-surface-overlay:rgba(0,0,0,0.05);
+  --color-surface-brand:var(--_y400); --color-surface-secondary:var(--_g950);
+  --color-text-primary:var(--_g950); --color-text-secondary:var(--_y900);
+  --color-text-tertiary:var(--_y800); --color-text-on-brand:var(--_g950);
+  --color-text-on-navy:var(--_g0);
+  --color-brand-primary:var(--_g950); --color-brand-hover:var(--_n700);
+  --color-brand-secondary:var(--_n700); --color-brand-accent:var(--_g950);
+  --color-border-subtle:rgba(0,0,0,0.08); --color-border-default:rgba(0,0,0,0.14);
+  --color-border-strong:rgba(0,0,0,0.25); --color-border-brand:var(--_g950);
+  --color-success-bg:rgba(45,140,122,0.12); --color-success-fg:var(--_teal-dark); --color-success-bd:var(--_teal);
+  --color-warning-bg:rgba(0,0,0,0.08); --color-warning-fg:var(--_y900); --color-warning-bd:var(--_y900);
+  --color-danger-bg:rgba(232,96,96,0.12); --color-danger-fg:#C0392B; --color-danger-bd:var(--_coral);
+  --color-info-bg:rgba(26,61,110,0.10); --color-info-fg:var(--_n900); --color-info-bd:var(--_n700);
+  --color-neutral-bg:rgba(0,0,0,0.06); --color-neutral-fg:var(--_y900); --color-neutral-bd:rgba(0,0,0,0.15);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.12); --shadow-md:0 4px 12px rgba(0,0,0,0.14);
+  --shadow-lg:0 10px 30px rgba(0,0,0,0.18); --shadow-brand:0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* ── NAVY EXECUTIVE THEME ─────────────────────────────────────── */
+.theme-navy {
+  color-scheme:dark;
+  --color-surface-page:var(--_n950); --color-surface-base:var(--_n900);
+  --color-surface-elevated:var(--_n700); --color-surface-sunken:var(--_n950);
+  --color-surface-overlay:rgba(255,255,255,0.04);
+  --color-surface-brand:var(--_y400); --color-surface-secondary:var(--_n700);
+  --color-text-primary:var(--_g0); --color-text-secondary:var(--_n100);
+  --color-text-tertiary:var(--_n300); --color-text-on-brand:var(--_g950);
+  --color-text-on-navy:var(--_g0);
+  --color-brand-primary:var(--_y400); --color-brand-hover:var(--_y200);
+  --color-brand-secondary:var(--_n500); --color-brand-accent:var(--_y400);
+  --color-border-subtle:rgba(107,158,208,0.12); --color-border-default:rgba(107,158,208,0.20);
+  --color-border-strong:rgba(107,158,208,0.35); --color-border-brand:var(--_y400);
+  --color-success-bg:rgba(45,140,122,0.15); --color-success-fg:var(--_teal-light); --color-success-bd:rgba(45,140,122,0.35);
+  --color-warning-bg:rgba(245,196,0,0.12); --color-warning-fg:var(--_y200); --color-warning-bd:rgba(245,196,0,0.30);
+  --color-danger-bg:rgba(232,96,96,0.14); --color-danger-fg:var(--_coral-light); --color-danger-bd:rgba(232,96,96,0.35);
+  --color-info-bg:rgba(45,107,168,0.20); --color-info-fg:var(--_n100); --color-info-bd:rgba(107,158,208,0.35);
+  --color-neutral-bg:rgba(255,255,255,0.05); --color-neutral-fg:var(--_n300); --color-neutral-bd:rgba(255,255,255,0.12);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.50); --shadow-md:0 4px 12px rgba(0,0,0,0.50);
+  --shadow-lg:0 10px 30px rgba(0,0,0,0.60); --shadow-brand:0 4px 20px rgba(245,196,0,0.18);
+}
+
+/* ── BASE RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-surface-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── THEME BAR ────────────────────────────────────────────────── */
+.theme-bar {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  background: var(--color-surface-secondary);
+  align-items: center;
+}
+.theme-bar button {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--color-border-default);
+  background: transparent;
+  color: var(--color-text-on-navy);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.theme-bar button:hover { background: var(--color-surface-overlay); }
+.theme-bar button.active {
+  background: var(--color-brand-primary);
+  color: var(--color-text-on-brand);
+  border-color: var(--color-brand-primary);
+  font-weight: 600;
+}
+
+/* ── HEADER ───────────────────────────────────────────────────── */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-base);
+}
+.site-header-wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+.site-header-sub {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+/* ── PAGE WRAPPER ─────────────────────────────────────────────── */
+.page-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px 60px;
+}
+
+/* ── FORM CARD ────────────────────────────────────────────────── */
+.form-card {
+  width: 100%;
+  max-width: 620px;
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.form-card-header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-elevated);
+}
+.form-card-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-brand-primary);
+  margin-bottom: 6px;
+}
+.form-card-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+}
+.form-card-desc {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.form-card-body {
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── FIELD STYLES ─────────────────────────────────────────────── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+.field-label .required-mark {
+  color: var(--color-danger-fg);
+  margin-left: 3px;
+}
+.field-input,
+.field-select,
+.field-textarea {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-md);
+  padding: 10px 14px;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  border-color: var(--color-brand-primary);
+  box-shadow: 0 0 0 3px var(--color-warning-bg);
+}
+.field-input.invalid,
+.field-select.invalid,
+.field-textarea.invalid {
+  border-color: var(--color-danger-bd);
+  box-shadow: 0 0 0 3px var(--color-danger-bg);
+}
+.field-textarea { resize: vertical; min-height: 96px; }
+
+/* Select arrow */
+.field-select-wrap { position: relative; }
+.field-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+/* Radio / Checkbox groups */
+.field-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.field-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+.field-option input[type="radio"],
+.field-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-brand-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Field error message */
+.field-error {
+  font-size: 12px;
+  color: var(--color-danger-fg);
+  display: none;
+}
+.field-error.visible { display: block; }
+
+/* ── SUBMIT BUTTON ────────────────────────────────────────────── */
+.btn-submit {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 13px 32px;
+  border-radius: var(--r-pill);
+  border: none;
+  background: var(--color-brand-primary);
+  color: var(--color-text-on-brand);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  align-self: flex-start;
+  box-shadow: var(--shadow-brand);
+}
+.btn-submit:hover { background: var(--color-brand-hover); }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-submit:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 3px;
+}
+
+/* ── STATE CARDS ─────────────────────────────────────────────── */
+/* Loading, unavailable, success — all share the same card layout */
+.state-card {
+  width: 100%;
+  max-width: 620px;
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: 48px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.state-icon {
+  font-size: 40px;
+  line-height: 1;
+}
+.state-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+.state-body {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 380px;
+}
+
+/* Success — uses success tokens */
+.state-card.success {
+  border-color: var(--color-success-bd);
+  background: var(--color-success-bg);
+}
+.state-card.success .state-title { color: var(--color-success-fg); }
+
+/* Unavailable — uses danger tokens */
+.state-card.unavailable {
+  border-color: var(--color-danger-bd);
+  background: var(--color-danger-bg);
+}
+.state-card.unavailable .state-title { color: var(--color-danger-fg); }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .form-card-header, .form-card-body { padding: 20px 18px; }
+  .form-card-title { font-size: 21px; }
+  .state-card { padding: 36px 20px; }
+  .page-wrap { padding: 24px 12px 48px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── THEME BAR ─────────────────────────────────────────────── -->
+<div class="theme-bar">
+  <button onclick="olyTheme('theme-light',this)">Light</button>
+  <button onclick="olyTheme('theme-dark',this)" class="active">Dark</button>
+  <button onclick="olyTheme('theme-brand',this)">Brand</button>
+  <button onclick="olyTheme('theme-navy',this)">Navy</button>
+</div>
+
+<!-- ── HEADER ────────────────────────────────────────────────── -->
+<header class="site-header">
+  <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+    <img src="logo.jpg" alt="Olympic Paints" width="36" height="36"
+         style="display:block;width:100%;height:100%;object-fit:cover;"
+         onerror="this.parentElement.style.display='none'">
+  </div>
+  <div>
+    <div class="site-header-wordmark">Olympic Paints</div>
+    <div class="site-header-sub">Form Portal</div>
+  </div>
+</header>
+
+<!-- ── PAGE CONTENT ──────────────────────────────────────────── -->
+<main class="page-wrap" id="main-content">
+  <!-- Populated by JS: loading → form | unavailable | success -->
+</main>
+
+<!-- ── SUPABASE CDN ───────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<script>
+// ── CONFIG — replace with real values after Supabase project is created ──
+const SUPABASE_URL  = 'REPLACE_WITH_YOUR_SUPABASE_URL';
+const SUPABASE_ANON = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── THEME SWITCHER ───────────────────────────────────────────────────────
+const OLY_THEMES = ['theme-light','theme-dark','theme-brand','theme-navy'];
+function olyTheme(t, btn) {
+  document.documentElement.classList.remove(...OLY_THEMES);
+  document.documentElement.classList.add(t);
+  localStorage.setItem('oly-theme', t);
+  document.querySelectorAll('.theme-bar button')
+    .forEach(b => b.classList.toggle('active', b === btn));
+}
+// Sync active button state on load
+(function syncThemeBtn() {
+  const active = document.documentElement.className || 'theme-dark';
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().replace(' ','') === active.replace('theme-',''));
+  });
+})();
+
+// ── RENDER HELPERS ───────────────────────────────────────────────────────
+const main = document.getElementById('main-content');
+
+function showLoading() {
+  main.innerHTML = `
+    <div class="state-card">
+      <div class="state-icon">⏳</div>
+      <div class="state-title">Loading form…</div>
+      <div class="state-body">Please wait a moment.</div>
+    </div>`;
+}
+
+function showUnavailable(msg) {
+  main.innerHTML = `
+    <div class="state-card unavailable">
+      <div class="state-icon">🚫</div>
+      <div class="state-title">Form unavailable</div>
+      <div class="state-body">${escHtml(msg)}</div>
+    </div>`;
+}
+
+function showSuccess(title) {
+  main.innerHTML = `
+    <div class="state-card success">
+      <div class="state-icon">✅</div>
+      <div class="state-title">Submitted!</div>
+      <div class="state-body">
+        Thank you — your response to <strong>${escHtml(title)}</strong> has been recorded.
+      </div>
+    </div>`;
+}
+
+// ── FIELD RENDERER ───────────────────────────────────────────────────────
+function renderField(field) {
+  const req  = field.required ? '<span class="required-mark" aria-hidden="true">*</span>' : '';
+  const id   = `field_${field.id}`;
+  const name = `field_${field.id}`;
+
+  let input = '';
+
+  switch (field.type) {
+    case 'text':
+    case 'email':
+    case 'tel':
+    case 'number':
+    case 'date':
+      input = `<input
+        class="field-input"
+        type="${escHtml(field.type)}"
+        id="${id}"
+        name="${name}"
+        placeholder="${escHtml(field.placeholder || '')}"
+        ${field.required ? 'required' : ''}
+      >`;
+      break;
+
+    case 'textarea':
+      input = `<textarea
+        class="field-textarea"
+        id="${id}"
+        name="${name}"
+        placeholder="${escHtml(field.placeholder || '')}"
+        ${field.required ? 'required' : ''}
+      ></textarea>`;
+      break;
+
+    case 'select':
+      const opts = (field.options || []).map(o =>
+        `<option value="${escHtml(o)}">${escHtml(o)}</option>`
+      ).join('');
+      input = `
+        <div class="field-select-wrap">
+          <select class="field-select" id="${id}" name="${name}" ${field.required ? 'required' : ''}>
+            <option value="">${escHtml(field.placeholder || 'Choose…')}</option>
+            ${opts}
+          </select>
+        </div>`;
+      break;
+
+    case 'radio':
+      const radios = (field.options || []).map(o => `
+        <label class="field-option">
+          <input type="radio" name="${name}" value="${escHtml(o)}" ${field.required ? 'required' : ''}>
+          ${escHtml(o)}
+        </label>`).join('');
+      input = `<div class="field-options" role="radiogroup" aria-labelledby="lbl_${id}">${radios}</div>`;
+      break;
+
+    case 'checkbox':
+      const checks = (field.options || []).map(o => `
+        <label class="field-option">
+          <input type="checkbox" name="${name}" value="${escHtml(o)}">
+          ${escHtml(o)}
+        </label>`).join('');
+      input = `<div class="field-options">${checks}</div>`;
+      break;
+
+    default:
+      input = `<input class="field-input" type="text" id="${id}" name="${name}" placeholder="${escHtml(field.placeholder || '')}">`;
+  }
+
+  return `
+    <div class="field-group" data-field-id="${escHtml(field.id)}">
+      <label class="field-label" id="lbl_${id}" for="${id}">
+        ${escHtml(field.label)}${req}
+      </label>
+      ${input}
+      <div class="field-error" id="err_${id}">This field is required.</div>
+    </div>`;
+}
+
+// ── FORM RENDERER ────────────────────────────────────────────────────────
+function renderForm(record) {
+  const fields = [...(record.schema || [])]
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  const fieldsHtml = fields.map(renderField).join('');
+
+  main.innerHTML = `
+    <div class="form-card">
+      <div class="form-card-header">
+        <div class="form-card-eyebrow">Olympic Paints</div>
+        <div class="form-card-title">${escHtml(record.title)}</div>
+        ${record.description ? `<div class="form-card-desc">${escHtml(record.description)}</div>` : ''}
+      </div>
+      <form class="form-card-body" id="dyn-form" novalidate>
+        ${fieldsHtml}
+        <div>
+          <button type="submit" class="btn-submit" id="btn-submit">Submit</button>
+        </div>
+      </form>
+    </div>`;
+
+  document.getElementById('dyn-form').addEventListener('submit', e => handleSubmit(e, record));
+}
+
+// ── VALIDATION ───────────────────────────────────────────────────────────
+function validateForm(fields, formEl) {
+  let valid = true;
+
+  fields.forEach(field => {
+    const errEl = document.getElementById(`err_field_${field.id}`);
+    if (!field.required) return;
+
+    let value;
+    if (field.type === 'radio') {
+      const checked = formEl.querySelector(`input[name="field_${field.id}"]:checked`);
+      value = checked ? checked.value : '';
+    } else if (field.type === 'checkbox') {
+      const checked = formEl.querySelectorAll(`input[name="field_${field.id}"]:checked`);
+      value = checked.length > 0 ? 'ok' : '';
+    } else {
+      const el = formEl.querySelector(`[name="field_${field.id}"]`);
+      value = el ? el.value.trim() : '';
+    }
+
+    const invalid = value === '';
+    if (errEl) errEl.classList.toggle('visible', invalid);
+
+    // Apply invalid class to the input/select/textarea
+    const inputEl = formEl.querySelector(`#field_${field.id}`);
+    if (inputEl) inputEl.classList.toggle('invalid', invalid);
+
+    if (invalid) valid = false;
+  });
+
+  return valid;
+}
+
+// ── SUBMISSION ───────────────────────────────────────────────────────────
+async function handleSubmit(e, record) {
+  e.preventDefault();
+  const formEl = document.getElementById('dyn-form');
+  const fields = [...(record.schema || [])].sort((a,b)=>(a.order??0)-(b.order??0));
+
+  if (!validateForm(fields, formEl)) return;
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Collect field values
+  const data = {};
+  let submittedBy = null;
+
+  fields.forEach(field => {
+    let value;
+    if (field.type === 'radio') {
+      const checked = formEl.querySelector(`input[name="field_${field.id}"]:checked`);
+      value = checked ? checked.value : null;
+    } else if (field.type === 'checkbox') {
+      const checked = formEl.querySelectorAll(`input[name="field_${field.id}"]:checked`);
+      value = Array.from(checked).map(c => c.value);
+    } else {
+      const el = formEl.querySelector(`[name="field_${field.id}"]`);
+      value = el ? el.value.trim() : null;
+    }
+    data[field.id] = value;
+
+    // Use first text/email field labelled "name" as submitted_by
+    if (!submittedBy && ['text','email'].includes(field.type) &&
+        field.label.toLowerCase().includes('name')) {
+      submittedBy = value;
+    }
+  });
+
+  const { error } = await db.from('form_submissions').insert({
+    form_id:      record.id,
+    submitted_by: submittedBy,
+    data,
+    metadata: {
+      user_agent:   navigator.userAgent,
+      submitted_at: new Date().toISOString(),
+    },
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = 'Submit';
+    alert('Submission failed. Please try again.\n\n' + error.message);
+    return;
+  }
+
+  showSuccess(record.title);
+}
+
+// ── MAIN INIT ────────────────────────────────────────────────────────────
+async function init() {
+  showLoading();
+
+  // Read form_id from ?id= query param
+  const params = new URLSearchParams(window.location.search);
+  const formId = params.get('id');
+
+  if (!formId) {
+    showUnavailable('No form ID was provided in the URL. Use ?id=your-form-id');
+    return;
+  }
+
+  const { data, error } = await db
+    .from('form_schemas')
+    .select('id, title, description, schema')
+    .eq('id', formId)
+    .maybeSingle();
+
+  if (error) {
+    showUnavailable('Could not load form. Please try again later.');
+    console.error(error);
+    return;
+  }
+
+  if (!data) {
+    showUnavailable('This form is no longer available, has expired, or does not exist.');
+    return;
+  }
+
+  // Update page title once form is loaded
+  document.title = `${data.title} — Olympic Paints`;
+
+  renderForm(data);
+}
+
+// ── UTILITY ──────────────────────────────────────────────────────────────
+function escHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+init();
+</script>
+</body>
+</html>
