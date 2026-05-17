@@ -440,16 +440,9 @@ body {
   <!-- Populated by JS: loading → form | unavailable | success -->
 </main>
 
-<!-- ── SUPABASE CDN ───────────────────────────────────────────── -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
 <script>
-// ── CONFIG — replace with real values after Supabase project is created ──
-const SUPABASE_URL  = 'REPLACE_WITH_YOUR_SUPABASE_URL';
-const SUPABASE_ANON = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
-
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+// ── CONFIG ───────────────────────────────────────────────────────────────
+const FORMS_API = 'https://olympic-paints-forms-admin.vercel.app';
 
 // ── THEME SWITCHER ───────────────────────────────────────────────────────
 const OLY_THEMES = ['theme-light','theme-dark','theme-brand','theme-navy'];
@@ -674,20 +667,29 @@ async function handleSubmit(e, record) {
     }
   });
 
-  const { error } = await db.from('form_submissions').insert({
-    form_id:      record.id,
-    submitted_by: submittedBy,
-    data,
-    metadata: {
-      user_agent:   navigator.userAgent,
-      submitted_at: new Date().toISOString(),
-    },
+  const res = await fetch(`${FORMS_API}/api/submit/${record.id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data,
+      metadata: {
+        rep_code:     data.rep_code || 'unknown',
+        rep_email:    submittedBy,
+        user_agent:   navigator.userAgent,
+        submitted_at: new Date().toISOString(),
+      },
+    }),
   });
 
-  if (error) {
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
     btn.disabled = false;
     btn.textContent = 'Submit';
-    alert('Submission failed. Please try again.\n\n' + error.message);
+    if (res.status === 409) {
+      alert('You have already submitted this form.');
+    } else {
+      alert('Submission failed. Please try again.\n\n' + (err.error || res.statusText));
+    }
     return;
   }
 
@@ -698,7 +700,6 @@ async function handleSubmit(e, record) {
 async function init() {
   showLoading();
 
-  // Read form_id from ?id= query param
   const params = new URLSearchParams(window.location.search);
   const formId = params.get('id');
 
@@ -707,26 +708,25 @@ async function init() {
     return;
   }
 
-  const { data, error } = await db
-    .from('form_schemas')
-    .select('id, title, description, schema')
-    .eq('id', formId)
-    .maybeSingle();
-
-  if (error) {
-    showUnavailable('Could not load form. Please try again later.');
-    console.error(error);
+  let data;
+  try {
+    const res = await fetch(`${FORMS_API}/api/forms/public/${formId}`);
+    if (res.status === 404 || res.status === 410) {
+      showUnavailable('This form is no longer available, has expired, or does not exist.');
+      return;
+    }
+    if (!res.ok) {
+      showUnavailable('Could not load form. Please try again later.');
+      return;
+    }
+    data = await res.json();
+  } catch (e) {
+    showUnavailable('Could not reach the form server. Check your connection.');
+    console.error(e);
     return;
   }
 
-  if (!data) {
-    showUnavailable('This form is no longer available, has expired, or does not exist.');
-    return;
-  }
-
-  // Update page title once form is loaded
   document.title = `${data.title} — Olympic Paints`;
-
   renderForm(data);
 }
 
