@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Olympic Paints — Form</title>
+<title>Form Management Board — Olympic Paints</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -20,12 +20,13 @@
   --_g900:#1A1A18; --_g950:#0D0D0B;
   --_teal:#2D8C7A; --_teal-light:#C8EDE7; --_teal-dark:#1a5c50;
   --_coral:#E86060; --_coral-light:#FDDCDC;
+  --_terra:#C97A3A; --_terra-light:#F7E0C8;
+  --_violet:#9B7DBF; --_violet-light:#EDE0F7;
+  --_sage:#7A8C55; --_ink:#5C6B7A;
   --font-display:'Barlow Condensed',sans-serif;
   --font-body:'Barlow',sans-serif;
   --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:50px;
 }
-
-/* ── LIGHT THEME ──────────────────────────────────────────────── */
 .theme-light {
   color-scheme:light;
   --color-surface-page:var(--_g50); --color-surface-base:var(--_g0);
@@ -47,8 +48,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,0.08); --shadow-md:0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg:0 10px 30px rgba(0,0,0,0.10); --shadow-brand:0 4px 16px rgba(245,196,0,0.20);
 }
-
-/* ── DARK THEME ───────────────────────────────────────────────── */
 .theme-dark {
   color-scheme:dark;
   --color-surface-page:var(--_g950); --color-surface-base:var(--_g900);
@@ -70,8 +69,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,0.40); --shadow-md:0 4px 12px rgba(0,0,0,0.40);
   --shadow-lg:0 10px 30px rgba(0,0,0,0.50); --shadow-brand:0 4px 20px rgba(245,196,0,0.15);
 }
-
-/* ── BRAND THEME ──────────────────────────────────────────────── */
 .theme-brand {
   color-scheme:light;
   --color-surface-page:var(--_y400); --color-surface-base:var(--_y200);
@@ -93,8 +90,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,0.12); --shadow-md:0 4px 12px rgba(0,0,0,0.14);
   --shadow-lg:0 10px 30px rgba(0,0,0,0.18); --shadow-brand:0 4px 16px rgba(0,0,0,0.15);
 }
-
-/* ── NAVY EXECUTIVE THEME ─────────────────────────────────────── */
 .theme-navy {
   color-scheme:dark;
   --color-surface-page:var(--_n950); --color-surface-base:var(--_n900);
@@ -117,298 +112,291 @@
   --shadow-lg:0 10px 30px rgba(0,0,0,0.60); --shadow-brand:0 4px 20px rgba(245,196,0,0.18);
 }
 
-/* ── BASE RESET ───────────────────────────────────────────────── */
+/* ── BASE ─────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--color-surface-page);
   color: var(--color-text-primary);
   font-family: var(--font-body);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ── THEME BAR ────────────────────────────────────────────────── */
 .theme-bar {
-  display: flex;
-  gap: 4px;
-  padding: 8px 16px;
-  background: var(--color-surface-secondary);
-  align-items: center;
+  display: flex; gap: 4px; padding: 8px 16px;
+  background: var(--color-surface-secondary); align-items: center;
 }
 .theme-bar button {
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: var(--r-pill);
+  font-family: var(--font-body); font-size: 12px; font-weight: 500;
+  padding: 4px 12px; border-radius: var(--r-pill);
   border: 1px solid var(--color-border-default);
-  background: transparent;
-  color: var(--color-text-on-navy);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  background: transparent; color: var(--color-text-on-navy);
+  cursor: pointer; transition: background 0.15s, color 0.15s;
 }
 .theme-bar button:hover { background: var(--color-surface-overlay); }
 .theme-bar button.active {
-  background: var(--color-brand-primary);
-  color: var(--color-text-on-brand);
-  border-color: var(--color-brand-primary);
-  font-weight: 600;
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  border-color: var(--color-brand-primary); font-weight: 600;
 }
 
 /* ── HEADER ───────────────────────────────────────────────────── */
 .site-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  display: flex; align-items: center; gap: 14px;
   padding: 20px 24px 16px;
   border-bottom: 1px solid var(--color-border-subtle);
   background: var(--color-surface-base);
 }
+.site-header-right { margin-left: auto; }
 .site-header-wordmark {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-text-primary);
-  line-height: 1;
+  font-family: var(--font-display); font-weight: 800; font-size: 18px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--color-text-primary); line-height: 1;
 }
-.site-header-sub {
-  font-family: var(--font-body);
-  font-size: 11px;
-  color: var(--color-text-secondary);
-  margin-top: 2px;
+.site-header-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+
+/* ── PAGE WRAP ────────────────────────────────────────────────── */
+.page-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+
+/* ── PAGE HEADER ──────────────────────────────────────────────── */
+.page-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+}
+.page-title {
+  font-family: var(--font-display); font-weight: 900; font-size: 36px;
+  text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--color-text-primary);
+}
+.page-subtitle { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+
+/* ── FILTERS ──────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+  align-items: center;
+}
+.filter-btn {
+  font-family: var(--font-body); font-size: 12px; font-weight: 500;
+  padding: 5px 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-surface-base); color: var(--color-text-secondary);
+  cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.filter-btn.active {
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  border-color: var(--color-brand-primary); font-weight: 600;
+}
+.filter-sep { width: 1px; height: 24px; background: var(--color-border-default); margin: 0 4px; }
+.filter-count {
+  font-size: 12px; color: var(--color-text-secondary);
+  margin-left: auto; white-space: nowrap;
 }
 
-/* ── PAGE WRAPPER ─────────────────────────────────────────────── */
-.page-wrap {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 16px 60px;
+/* ── FORM GRID ────────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
 }
 
 /* ── FORM CARD ────────────────────────────────────────────────── */
 .form-card {
-  width: 100%;
-  max-width: 620px;
   background: var(--color-surface-base);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  transition: box-shadow 0.15s, border-color 0.15s;
   overflow: hidden;
 }
-.form-card-header {
-  padding: 28px 32px 20px;
-  border-bottom: 1px solid var(--color-border-subtle);
-  background: var(--color-surface-elevated);
+.form-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
 }
+.form-card-accent {
+  height: 3px;
+}
+
+.form-card-body { padding: 16px 18px 12px; flex: 1; }
 .form-card-eyebrow {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-brand-primary);
-  margin-bottom: 6px;
+  font-family: var(--font-display); font-weight: 700; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-text-tertiary); margin-bottom: 5px;
 }
 .form-card-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 26px;
-  text-transform: uppercase;
-  color: var(--color-text-primary);
-  line-height: 1.15;
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  text-transform: uppercase; color: var(--color-text-primary);
+  line-height: 1.25; margin-bottom: 10px;
 }
-.form-card-desc {
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--color-text-secondary);
-  line-height: 1.55;
+.form-card-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
 }
-.form-card-body {
-  padding: 28px 32px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.badge {
+  font-family: var(--font-body); font-size: 11px; font-weight: 500;
+  padding: 2px 9px; border-radius: var(--r-pill); border: 1px solid;
+  display: inline-flex; align-items: center; gap: 4px;
 }
+.badge-enamel  { background:rgba(201,122,58,0.12); color:var(--_terra);       border-color:rgba(201,122,58,0.30); }
+.badge-pva     { background:rgba(45,107,168,0.12); color:var(--_n300);        border-color:rgba(45,107,168,0.30); }
+.badge-waterproofing { background:rgba(45,140,122,0.12); color:var(--_teal-light); border-color:rgba(45,140,122,0.30); }
+.badge-other   { background:var(--color-neutral-bg); color:var(--color-neutral-fg); border-color:var(--color-neutral-bd); }
+.badge-count   { background:var(--color-neutral-bg); color:var(--color-neutral-fg); border-color:var(--color-neutral-bd); }
+.badge-count.has-responses { background:rgba(45,140,122,0.12); color:var(--_teal-light); border-color:rgba(45,140,122,0.30); }
 
-/* ── FIELD STYLES ─────────────────────────────────────────────── */
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* light theme badge overrides */
+.theme-light .badge-pva   { color:var(--_n700); }
+.theme-light .badge-waterproofing { color:var(--_teal-dark); }
+.theme-light .badge-count.has-responses { color:var(--_teal-dark); }
+
+.form-card-footer {
+  padding: 10px 18px 14px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex; gap: 8px; align-items: center;
 }
-.field-label {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--color-text-primary);
+.btn-open {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 7px 16px; border-radius: var(--r-pill); border: none;
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  cursor: pointer; transition: background 0.15s; text-decoration: none;
+  display: inline-flex; align-items: center;
 }
-.field-label .required-mark {
-  color: var(--color-danger-fg);
-  margin-left: 3px;
+.btn-open:hover { background: var(--color-brand-hover); }
+.btn-copy {
+  font-family: var(--font-body); font-size: 12px; font-weight: 500;
+  padding: 7px 12px; border-radius: var(--r-pill);
+  border: 1px solid var(--color-border-default);
+  background: transparent; color: var(--color-text-secondary);
+  cursor: pointer; transition: all 0.15s;
 }
-.field-input,
-.field-select,
-.field-textarea {
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--color-text-primary);
+.btn-copy:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.btn-copy.copied { color: var(--color-success-fg); border-color: var(--color-success-bd); }
+
+/* ── CREATE BUTTON ────────────────────────────────────────────── */
+.btn-create {
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 10px 22px; border-radius: var(--r-pill); border: none;
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+  box-shadow: var(--shadow-brand); display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-create:hover { background: var(--color-brand-hover); }
+.btn-create:active { transform: scale(0.97); }
+
+/* ── MODAL ────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-xl); box-shadow: var(--shadow-lg);
+  width: 100%; max-width: 560px;
+  transform: translateY(12px); transition: transform 0.2s;
+}
+.modal-backdrop.open .modal { transform: translateY(0); }
+.modal-header {
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.modal-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 20px;
+  text-transform: uppercase; color: var(--color-text-primary);
+}
+.modal-body { padding: 20px 24px; }
+.modal-field { margin-bottom: 16px; }
+.modal-label {
+  display: block; font-size: 13px; font-weight: 500;
+  color: var(--color-text-primary); margin-bottom: 6px;
+}
+.modal-select {
+  width: 100%; font-family: var(--font-body); font-size: 14px;
+  color: var(--color-text-primary); background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-default); border-radius: var(--r-md);
+  padding: 10px 14px; appearance: none; outline: none;
+  transition: border-color 0.15s;
+}
+.modal-select:focus { border-color: var(--color-brand-primary); }
+.modal-prompt-wrap {
   background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-default); border-radius: var(--r-md);
+  padding: 14px; margin-top: 4px; display: none;
+}
+.modal-prompt-wrap.visible { display: block; }
+.modal-prompt-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 8px;
+}
+.modal-prompt-text {
+  font-family: var(--font-body); font-size: 12px; color: var(--color-text-secondary);
+  line-height: 1.5; max-height: 140px; overflow-y: auto;
+  white-space: pre-wrap; word-break: break-word;
+}
+.modal-footer {
+  padding: 14px 24px 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex; gap: 10px; justify-content: flex-end;
+}
+.btn-modal-cancel {
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  padding: 9px 20px; border-radius: var(--r-pill);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--r-md);
-  padding: 10px 14px;
-  width: 100%;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
+  background: transparent; color: var(--color-text-secondary);
+  cursor: pointer; transition: all 0.15s;
 }
-.field-input:focus,
-.field-select:focus,
-.field-textarea:focus {
-  border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 3px var(--color-warning-bg);
+.btn-modal-cancel:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.btn-modal-copy {
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 9px 22px; border-radius: var(--r-pill); border: none;
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  cursor: pointer; transition: background 0.15s;
 }
-.field-input.invalid,
-.field-select.invalid,
-.field-textarea.invalid {
-  border-color: var(--color-danger-bd);
-  box-shadow: 0 0 0 3px var(--color-danger-bg);
-}
-.field-textarea { resize: vertical; min-height: 96px; }
+.btn-modal-copy:hover { background: var(--color-brand-hover); }
+.btn-modal-copy:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* Select arrow */
-.field-select-wrap { position: relative; }
-.field-select-wrap::after {
-  content: '▾';
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
+/* ── LOADING / EMPTY ──────────────────────────────────────────── */
+.state-row {
+  grid-column: 1/-1; padding: 60px 24px; text-align: center;
+  color: var(--color-text-secondary); font-size: 14px;
+}
+.state-row strong { display: block; font-family: var(--font-display); font-size: 20px;
+  font-weight: 800; text-transform: uppercase; color: var(--color-text-primary);
+  margin-bottom: 6px; }
+
+/* ── CATEGORY ACCENT COLOURS ──────────────────────────────────── */
+.accent-enamel      { background: var(--_terra); }
+.accent-pva         { background: var(--_n500); }
+.accent-waterproofing { background: var(--_teal); }
+.accent-other       { background: var(--_ink); }
+
+/* ── COMPETITOR SECTION HEADER ────────────────────────────────── */
+.section-header {
+  grid-column: 1/-1;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0 4px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-top: 8px;
+}
+.section-header:first-child { margin-top: 0; }
+.section-label {
+  font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--color-text-secondary);
-  font-size: 12px;
 }
-
-/* Radio / Checkbox groups */
-.field-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.field-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--color-text-primary);
-}
-.field-option input[type="radio"],
-.field-option input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--color-brand-primary);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-/* Field error message */
-.field-error {
-  font-size: 12px;
-  color: var(--color-danger-fg);
-  display: none;
-}
-.field-error.visible { display: block; }
-
-/* ── SUBMIT BUTTON ────────────────────────────────────────────── */
-.btn-submit {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 13px 32px;
-  border-radius: var(--r-pill);
-  border: none;
-  background: var(--color-brand-primary);
-  color: var(--color-text-on-brand);
-  cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
-  align-self: flex-start;
-  box-shadow: var(--shadow-brand);
-}
-.btn-submit:hover { background: var(--color-brand-hover); }
-.btn-submit:active { transform: scale(0.98); }
-.btn-submit:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
-}
-.btn-submit:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 3px;
-}
-
-/* ── STATE CARDS ─────────────────────────────────────────────── */
-/* Loading, unavailable, success — all share the same card layout */
-.state-card {
-  width: 100%;
-  max-width: 620px;
-  background: var(--color-surface-base);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-md);
-  padding: 48px 40px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-.state-icon {
-  font-size: 40px;
-  line-height: 1;
-}
-.state-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 22px;
-  text-transform: uppercase;
-  color: var(--color-text-primary);
-}
-.state-body {
-  font-size: 14px;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  max-width: 380px;
-}
-
-/* Success — uses success tokens */
-.state-card.success {
-  border-color: var(--color-success-bd);
-  background: var(--color-success-bg);
-}
-.state-card.success .state-title { color: var(--color-success-fg); }
-
-/* Unavailable — uses danger tokens */
-.state-card.unavailable {
-  border-color: var(--color-danger-bd);
-  background: var(--color-danger-bg);
-}
-.state-card.unavailable .state-title { color: var(--color-danger-fg); }
+.section-divider { flex: 1; height: 1px; background: var(--color-border-subtle); }
 
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
-@media (max-width: 480px) {
-  .form-card-header, .form-card-body { padding: 20px 18px; }
-  .form-card-title { font-size: 21px; }
-  .state-card { padding: 36px 20px; }
-  .page-wrap { padding: 24px 12px 48px; }
+@media (max-width: 600px) {
+  .page-wrap { padding: 20px 14px 48px; }
+  .page-title { font-size: 28px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
@@ -431,36 +419,120 @@ body {
   </div>
   <div>
     <div class="site-header-wordmark">Olympic Paints</div>
-    <div class="site-header-sub">Form Portal</div>
+    <div class="site-header-sub">Form Management Board</div>
+  </div>
+  <div class="site-header-right">
+    <button class="btn-create" onclick="openCreateModal()">
+      <span>+</span> New Form
+    </button>
   </div>
 </header>
 
-<!-- ── PAGE CONTENT ──────────────────────────────────────────── -->
-<main class="page-wrap" id="main-content">
-  <!-- Populated by JS: loading → form | unavailable | success -->
+<!-- ── MAIN ──────────────────────────────────────────────────── -->
+<main class="page-wrap">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Forms</div>
+      <div class="page-subtitle" id="last-refreshed">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" data-filter="enamel" onclick="setFilter('enamel',this)">Enamel</button>
+    <button class="filter-btn" data-filter="pva" onclick="setFilter('pva',this)">PVA</button>
+    <button class="filter-btn" data-filter="waterproofing" onclick="setFilter('waterproofing',this)">Waterproofing</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn" data-filter="has_responses" onclick="setFilter('has_responses',this)">Has responses</button>
+    <span class="filter-count" id="filter-count"></span>
+  </div>
+
+  <!-- Card grid -->
+  <div class="form-grid" id="form-grid">
+    <div class="state-row"><strong>Loading forms…</strong>Fetching from the admin API.</div>
+  </div>
 </main>
 
-<!-- ── SUPABASE CDN ───────────────────────────────────────────── -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- ── CREATE MODAL ───────────────────────────────────────────── -->
+<div class="modal-backdrop" id="create-modal" onclick="handleBackdropClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">New Form</div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:18px;">
+        Select a competitor and category, then copy the generated prompt and paste it into Claude to create the form in Supabase.
+      </p>
+      <div class="modal-field">
+        <label class="modal-label" for="sel-competitor">Competitor</label>
+        <select class="modal-select" id="sel-competitor" onchange="updatePrompt()">
+          <option value="">— choose —</option>
+          <option value="africa_paints">Africa Paints</option>
+          <option value="anetic">Anetic</option>
+          <option value="crest">Crest</option>
+          <option value="excelsior">Excelsior</option>
+          <option value="golden_choice">Golden Choice</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label" for="sel-category">Category</label>
+        <select class="modal-select" id="sel-category" onchange="updatePrompt()">
+          <option value="">— choose —</option>
+          <option value="enamel">Enamel</option>
+          <option value="pva">PVA</option>
+          <option value="waterproofing">Waterproofing</option>
+        </select>
+      </div>
+      <div class="modal-prompt-wrap" id="prompt-wrap">
+        <div class="modal-prompt-label">Prompt to copy</div>
+        <div class="modal-prompt-text" id="prompt-text"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="closeCreateModal()">Cancel</button>
+      <button class="btn-modal-copy" id="btn-modal-copy" disabled onclick="copyPrompt()">Copy Prompt</button>
+    </div>
+  </div>
+</div>
 
 <script>
-// ── CONFIG — replace with real values after Supabase project is created ──
-const SUPABASE_URL  = 'REPLACE_WITH_YOUR_SUPABASE_URL';
-const SUPABASE_ANON = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
+// ── CONFIG ───────────────────────────────────────────────────────────────
+const ADMIN_API  = 'https://olympic-paints-forms-admin.vercel.app';
+const ADMIN_SECRET = 'QuinT@Sky99918';
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+// ── FORM PROMPTS (from _form_prompts.json) ───────────────────────────────
+const FORM_PROMPTS = {
+  "africa_paints__pva": "Create a form titled \"Olympic vs Africa Paints — PVA Matchup Verification\".\n\nINTRO (short paragraph at the top of the form):\n\"Quick check: confirm the Olympic product range we currently pair against each Africa Paints pva SKU. Pick the correct Olympic range from the dropdown, mark your confidence, add notes if anything is off. Should take 5 minutes. Submit by end of day.\"\n\nHIDDEN FIELDS:\n- rep_email, rep_code, competitor (default: africa_paints), category (default: pva)\n\nThen 10 numbered product sections, each with: (a) heading, (b) current match subtitle, (c) Olympic match dropdown, (d) Confidence radio, (e) Notes.\n\nRun build_supabase_forms.py to generate this form.",
+  "africa_paints__waterproofing": "Run build_supabase_forms.py --competitors africa_paints --categories waterproofing to generate this form.",
+  "africa_paints__enamel": "Run build_supabase_forms.py --competitors africa_paints --categories enamel to generate this form.",
+  "anetic__enamel": "Run build_supabase_forms.py --competitors anetic --categories enamel to generate this form.",
+  "anetic__pva": "Run build_supabase_forms.py --competitors anetic --categories pva to generate this form.",
+  "anetic__waterproofing": "Run build_supabase_forms.py --competitors anetic --categories waterproofing to generate this form.",
+  "crest__enamel": "Run build_supabase_forms.py --competitors crest --categories enamel to generate this form.",
+  "crest__pva": "Run build_supabase_forms.py --competitors crest --categories pva to generate this form.",
+  "crest__waterproofing": "Run build_supabase_forms.py --competitors crest --categories waterproofing to generate this form.",
+  "excelsior__enamel": "Run build_supabase_forms.py --competitors excelsior --categories enamel to generate this form.",
+  "excelsior__pva": "Run build_supabase_forms.py --competitors excelsior --categories pva to generate this form.",
+  "excelsior__waterproofing": "Run build_supabase_forms.py --competitors excelsior --categories waterproofing to generate this form.",
+  "golden_choice__enamel": "Run build_supabase_forms.py --competitors golden_choice --categories enamel to generate this form.",
+  "golden_choice__pva": "Run build_supabase_forms.py --competitors golden_choice --categories pva to generate this form.",
+  "golden_choice__waterproofing": "Run build_supabase_forms.py --competitors golden_choice --categories waterproofing to generate this form.",
+};
 
-// ── THEME SWITCHER ───────────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────────────────────
+let allForms = [];
+let activeFilter = 'all';
+
+// ── THEME ─────────────────────────────────────────────────────────────────
 const OLY_THEMES = ['theme-light','theme-dark','theme-brand','theme-navy'];
 function olyTheme(t, btn) {
   document.documentElement.classList.remove(...OLY_THEMES);
   document.documentElement.classList.add(t);
   localStorage.setItem('oly-theme', t);
-  document.querySelectorAll('.theme-bar button')
-    .forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.theme-bar button').forEach(b => b.classList.toggle('active', b === btn));
 }
-// Sync active button state on load
 (function syncThemeBtn() {
   const active = document.documentElement.className || 'theme-dark';
   document.querySelectorAll('.theme-bar button').forEach(btn => {
@@ -468,277 +540,209 @@ function olyTheme(t, btn) {
   });
 })();
 
-// ── RENDER HELPERS ───────────────────────────────────────────────────────
-const main = document.getElementById('main-content');
-
-function showLoading() {
-  main.innerHTML = `
-    <div class="state-card">
-      <div class="state-icon">⏳</div>
-      <div class="state-title">Loading form…</div>
-      <div class="state-body">Please wait a moment.</div>
-    </div>`;
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function esc(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function showUnavailable(msg) {
-  main.innerHTML = `
-    <div class="state-card unavailable">
-      <div class="state-icon">🚫</div>
-      <div class="state-title">Form unavailable</div>
-      <div class="state-body">${escHtml(msg)}</div>
-    </div>`;
+function categoryFromTitle(title) {
+  const t = title.toLowerCase();
+  if (t.includes('enamel')) return 'enamel';
+  if (t.includes('pva')) return 'pva';
+  if (t.includes('waterproofing')) return 'waterproofing';
+  return 'other';
 }
 
-function showSuccess(title) {
-  main.innerHTML = `
-    <div class="state-card success">
-      <div class="state-icon">✅</div>
-      <div class="state-title">Submitted!</div>
-      <div class="state-body">
-        Thank you — your response to <strong>${escHtml(title)}</strong> has been recorded.
-      </div>
-    </div>`;
+function competitorFromTitle(title) {
+  const t = title.toLowerCase();
+  if (t.includes('africa paints')) return 'Africa Paints';
+  if (t.includes('anetic'))        return 'Anetic';
+  if (t.includes('crest'))         return 'Crest';
+  if (t.includes('excelsior'))     return 'Excelsior';
+  if (t.includes('golden choice')) return 'Golden Choice';
+  return '';
 }
 
-// ── FIELD RENDERER ───────────────────────────────────────────────────────
-function renderField(field) {
-  const req  = field.required ? '<span class="required-mark" aria-hidden="true">*</span>' : '';
-  const id   = `field_${field.id}`;
-  const name = `field_${field.id}`;
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-ZA', { day:'numeric', month:'short', year:'numeric' });
+}
 
-  let input = '';
+function publicUrl(form) {
+  const raw = form.public_url || '';
+  if (!raw) return `https://flomaticauto.github.io/forms/f/?id=${form.id}`;
+  return raw.startsWith('http') ? raw : `https://${raw}`;
+}
 
-  switch (field.type) {
-    case 'text':
-    case 'email':
-    case 'tel':
-    case 'number':
-    case 'date':
-      input = `<input
-        class="field-input"
-        type="${escHtml(field.type)}"
-        id="${id}"
-        name="${name}"
-        placeholder="${escHtml(field.placeholder || '')}"
-        ${field.required ? 'required' : ''}
-      >`;
-      break;
-
-    case 'textarea':
-      input = `<textarea
-        class="field-textarea"
-        id="${id}"
-        name="${name}"
-        placeholder="${escHtml(field.placeholder || '')}"
-        ${field.required ? 'required' : ''}
-      ></textarea>`;
-      break;
-
-    case 'select':
-      const opts = (field.options || []).map(o =>
-        `<option value="${escHtml(o)}">${escHtml(o)}</option>`
-      ).join('');
-      input = `
-        <div class="field-select-wrap">
-          <select class="field-select" id="${id}" name="${name}" ${field.required ? 'required' : ''}>
-            <option value="">${escHtml(field.placeholder || 'Choose…')}</option>
-            ${opts}
-          </select>
-        </div>`;
-      break;
-
-    case 'radio':
-      const radios = (field.options || []).map(o => `
-        <label class="field-option">
-          <input type="radio" name="${name}" value="${escHtml(o)}" ${field.required ? 'required' : ''}>
-          ${escHtml(o)}
-        </label>`).join('');
-      input = `<div class="field-options" role="radiogroup" aria-labelledby="lbl_${id}">${radios}</div>`;
-      break;
-
-    case 'checkbox':
-      const checks = (field.options || []).map(o => `
-        <label class="field-option">
-          <input type="checkbox" name="${name}" value="${escHtml(o)}">
-          ${escHtml(o)}
-        </label>`).join('');
-      input = `<div class="field-options">${checks}</div>`;
-      break;
-
-    default:
-      input = `<input class="field-input" type="text" id="${id}" name="${name}" placeholder="${escHtml(field.placeholder || '')}">`;
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function renderGrid(forms) {
+  const grid = document.getElementById('form-grid');
+  if (!forms.length) {
+    grid.innerHTML = '<div class="state-row"><strong>No forms</strong>No forms match the current filter.</div>';
+    return;
   }
+
+  // Group by competitor
+  const groups = {};
+  forms.forEach(f => {
+    const comp = competitorFromTitle(f.title) || 'Other';
+    if (!groups[comp]) groups[comp] = [];
+    groups[comp].push(f);
+  });
+
+  const compOrder = ['Africa Paints','Anetic','Crest','Excelsior','Golden Choice','Other'];
+  let html = '';
+
+  compOrder.forEach(comp => {
+    if (!groups[comp]) return;
+    html += `
+      <div class="section-header">
+        <span class="section-label">${esc(comp)}</span>
+        <div class="section-divider"></div>
+      </div>`;
+    groups[comp].forEach(f => { html += renderCard(f); });
+  });
+
+  grid.innerHTML = html;
+  updateFilterCount(forms.length);
+}
+
+function renderCard(form) {
+  const cat  = categoryFromTitle(form.title);
+  const url  = publicUrl(form);
+  const count = form.submission_count || 0;
+  const hasResp = count > 0;
+  const catLabel = cat === 'waterproofing' ? 'Waterproofing' : cat === 'enamel' ? 'Enamel' : cat === 'pva' ? 'PVA' : 'Other';
+  const shortTitle = form.title
+    .replace(/^olympic vs [^—–-]+ [—–-] /i, '')  // strip "Olympic vs X — "
+    .replace(/ matchup verification$/i, '')
+    .trim();
 
   return `
-    <div class="field-group" data-field-id="${escHtml(field.id)}">
-      <label class="field-label" id="lbl_${id}" for="${id}">
-        ${escHtml(field.label)}${req}
-      </label>
-      ${input}
-      <div class="field-error" id="err_${id}">This field is required.</div>
-    </div>`;
-}
-
-// ── FORM RENDERER ────────────────────────────────────────────────────────
-function renderForm(record) {
-  const fields = [...(record.schema || [])]
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-  const fieldsHtml = fields.map(renderField).join('');
-
-  main.innerHTML = `
-    <div class="form-card">
-      <div class="form-card-header">
-        <div class="form-card-eyebrow">Olympic Paints</div>
-        <div class="form-card-title">${escHtml(record.title)}</div>
-        ${record.description ? `<div class="form-card-desc">${escHtml(record.description)}</div>` : ''}
-      </div>
-      <form class="form-card-body" id="dyn-form" novalidate>
-        ${fieldsHtml}
-        <div>
-          <button type="submit" class="btn-submit" id="btn-submit">Submit</button>
+    <div class="form-card" data-cat="${cat}" data-has-responses="${hasResp}">
+      <div class="form-card-accent accent-${cat}"></div>
+      <div class="form-card-body">
+        <div class="form-card-eyebrow">${esc(form.id.slice(0,8))}…</div>
+        <div class="form-card-title">${esc(shortTitle)}</div>
+        <div class="form-card-meta">
+          <span class="badge badge-${cat}">${esc(catLabel)}</span>
+          <span class="badge badge-count${hasResp ? ' has-responses' : ''}">
+            ${count} ${count === 1 ? 'response' : 'responses'}
+          </span>
         </div>
-      </form>
+      </div>
+      <div class="form-card-footer">
+        <a class="btn-open" href="${esc(url)}" target="_blank" rel="noopener">Open</a>
+        <button class="btn-copy" onclick="copyLink(this,'${esc(url)}')">Copy link</button>
+      </div>
     </div>`;
-
-  document.getElementById('dyn-form').addEventListener('submit', e => handleSubmit(e, record));
 }
 
-// ── VALIDATION ───────────────────────────────────────────────────────────
-function validateForm(fields, formEl) {
-  let valid = true;
+// ── FILTER ─────────────────────────────────────────────────────────────────
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 
-  fields.forEach(field => {
-    const errEl = document.getElementById(`err_field_${field.id}`);
-    if (!field.required) return;
-
-    let value;
-    if (field.type === 'radio') {
-      const checked = formEl.querySelector(`input[name="field_${field.id}"]:checked`);
-      value = checked ? checked.value : '';
-    } else if (field.type === 'checkbox') {
-      const checked = formEl.querySelectorAll(`input[name="field_${field.id}"]:checked`);
-      value = checked.length > 0 ? 'ok' : '';
-    } else {
-      const el = formEl.querySelector(`[name="field_${field.id}"]`);
-      value = el ? el.value.trim() : '';
-    }
-
-    const invalid = value === '';
-    if (errEl) errEl.classList.toggle('visible', invalid);
-
-    // Apply invalid class to the input/select/textarea
-    const inputEl = formEl.querySelector(`#field_${field.id}`);
-    if (inputEl) inputEl.classList.toggle('invalid', invalid);
-
-    if (invalid) valid = false;
-  });
-
-  return valid;
-}
-
-// ── SUBMISSION ───────────────────────────────────────────────────────────
-async function handleSubmit(e, record) {
-  e.preventDefault();
-  const formEl = document.getElementById('dyn-form');
-  const fields = [...(record.schema || [])].sort((a,b)=>(a.order??0)-(b.order??0));
-
-  if (!validateForm(fields, formEl)) return;
-
-  const btn = document.getElementById('btn-submit');
-  btn.disabled = true;
-  btn.textContent = 'Submitting…';
-
-  // Collect field values
-  const data = {};
-  let submittedBy = null;
-
-  fields.forEach(field => {
-    let value;
-    if (field.type === 'radio') {
-      const checked = formEl.querySelector(`input[name="field_${field.id}"]:checked`);
-      value = checked ? checked.value : null;
-    } else if (field.type === 'checkbox') {
-      const checked = formEl.querySelectorAll(`input[name="field_${field.id}"]:checked`);
-      value = Array.from(checked).map(c => c.value);
-    } else {
-      const el = formEl.querySelector(`[name="field_${field.id}"]`);
-      value = el ? el.value.trim() : null;
-    }
-    data[field.id] = value;
-
-    // Use first text/email field labelled "name" as submitted_by
-    if (!submittedBy && ['text','email'].includes(field.type) &&
-        field.label.toLowerCase().includes('name')) {
-      submittedBy = value;
-    }
-  });
-
-  const { error } = await db.from('form_submissions').insert({
-    form_id:      record.id,
-    submitted_by: submittedBy,
-    data,
-    metadata: {
-      user_agent:   navigator.userAgent,
-      submitted_at: new Date().toISOString(),
-    },
-  });
-
-  if (error) {
-    btn.disabled = false;
-    btn.textContent = 'Submit';
-    alert('Submission failed. Please try again.\n\n' + error.message);
-    return;
+  let filtered = allForms;
+  if (filter === 'has_responses') {
+    filtered = allForms.filter(f => (f.submission_count || 0) > 0);
+  } else if (filter !== 'all') {
+    filtered = allForms.filter(f => categoryFromTitle(f.title) === filter);
   }
-
-  showSuccess(record.title);
+  renderGrid(filtered);
 }
 
-// ── MAIN INIT ────────────────────────────────────────────────────────────
+function updateFilterCount(n) {
+  document.getElementById('filter-count').textContent = `${n} form${n === 1 ? '' : 's'}`;
+}
+
+// ── COPY LINK ──────────────────────────────────────────────────────────────
+function copyLink(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy link'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── CREATE MODAL ───────────────────────────────────────────────────────────
+function openCreateModal() {
+  document.getElementById('create-modal').classList.add('open');
+}
+function closeCreateModal() {
+  document.getElementById('create-modal').classList.remove('open');
+  document.getElementById('sel-competitor').value = '';
+  document.getElementById('sel-category').value = '';
+  document.getElementById('prompt-wrap').classList.remove('visible');
+  document.getElementById('btn-modal-copy').disabled = true;
+}
+function handleBackdropClick(e) {
+  if (e.target === document.getElementById('create-modal')) closeCreateModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCreateModal(); });
+
+function updatePrompt() {
+  const comp = document.getElementById('sel-competitor').value;
+  const cat  = document.getElementById('sel-category').value;
+  const key  = comp && cat ? `${comp}__${cat}` : null;
+  const prompt = key && FORM_PROMPTS[key] ? FORM_PROMPTS[key] : null;
+
+  const wrap = document.getElementById('prompt-wrap');
+  const text = document.getElementById('prompt-text');
+  const copyBtn = document.getElementById('btn-modal-copy');
+
+  if (prompt) {
+    text.textContent = prompt;
+    wrap.classList.add('visible');
+    copyBtn.disabled = false;
+  } else {
+    wrap.classList.remove('visible');
+    copyBtn.disabled = true;
+  }
+}
+
+function copyPrompt() {
+  const text = document.getElementById('prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-modal-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Prompt'; }, 1800);
+    closeCreateModal();
+  });
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
 async function init() {
-  showLoading();
+  try {
+    const res = await fetch(`${ADMIN_API}/api/forms/list`, {
+      headers: { 'x-admin-secret': ADMIN_SECRET }
+    });
+    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    const { forms } = await res.json();
 
-  // Read form_id from ?id= query param
-  const params = new URLSearchParams(window.location.search);
-  const formId = params.get('id');
+    // Exclude archived, sort: competitor forms first (by competitor name), then others
+    allForms = forms
+      .filter(f => !f.is_archived)
+      .sort((a, b) => {
+        const ca = competitorFromTitle(a.title);
+        const cb = competitorFromTitle(b.title);
+        if (ca && cb) return ca.localeCompare(cb) || categoryFromTitle(a.title).localeCompare(categoryFromTitle(b.title));
+        if (ca) return -1;
+        if (cb) return 1;
+        return a.title.localeCompare(b.title);
+      });
 
-  if (!formId) {
-    showUnavailable('No form ID was provided in the URL. Use ?id=your-form-id');
-    return;
+    renderGrid(allForms);
+    document.getElementById('last-refreshed').textContent =
+      `${allForms.length} active forms · refreshed ${new Date().toLocaleTimeString('en-ZA')}`;
+  } catch (err) {
+    document.getElementById('form-grid').innerHTML =
+      `<div class="state-row"><strong>Could not load forms</strong>${esc(err.message)}</div>`;
+    document.getElementById('last-refreshed').textContent = 'Load failed';
   }
-
-  const { data, error } = await db
-    .from('form_schemas')
-    .select('id, title, description, schema')
-    .eq('id', formId)
-    .maybeSingle();
-
-  if (error) {
-    showUnavailable('Could not load form. Please try again later.');
-    console.error(error);
-    return;
-  }
-
-  if (!data) {
-    showUnavailable('This form is no longer available, has expired, or does not exist.');
-    return;
-  }
-
-  // Update page title once form is loaded
-  document.title = `${data.title} — Olympic Paints`;
-
-  renderForm(data);
-}
-
-// ── UTILITY ──────────────────────────────────────────────────────────────
-function escHtml(str) {
-  if (str == null) return '';
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
 }
 
 init();
