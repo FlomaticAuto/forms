@@ -192,6 +192,55 @@ body {
   margin-left: auto; white-space: nowrap;
 }
 
+/* ── SEGMENT BAR (top-level Competitor / Account Intel / Operations) ─── */
+.segment-bar {
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 18px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.segment-btn {
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 12px 18px;
+  border: none; border-bottom: 2px solid transparent;
+  background: transparent; color: var(--color-text-secondary);
+  cursor: pointer; transition: color 0.15s, border-color 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: -1px;
+}
+.segment-btn:hover { color: var(--color-text-primary); }
+.segment-btn.active {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-brand-primary);
+}
+.segment-count {
+  font-family: var(--font-body); font-weight: 500; font-size: 11px;
+  padding: 1px 8px; border-radius: var(--r-pill);
+  background: var(--color-neutral-bg); color: var(--color-neutral-fg);
+  border: 1px solid var(--color-neutral-bd);
+  letter-spacing: 0;
+}
+.segment-btn.active .segment-count {
+  background: var(--color-brand-primary); color: var(--color-text-on-brand);
+  border-color: var(--color-brand-primary);
+}
+
+/* ── SEARCH BAR (Account Intel) ────────────────────────────────── */
+.search-bar {
+  display: flex; gap: 12px; align-items: center; margin-bottom: 20px;
+}
+.search-bar input {
+  flex: 1; max-width: 380px;
+  font-family: var(--font-body); font-size: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--r-md);
+  padding: 9px 14px; outline: none;
+  transition: border-color 0.15s;
+}
+.search-bar input:focus { border-color: var(--color-brand-primary); }
+.search-bar input::placeholder { color: var(--color-text-tertiary); }
+
 /* ── FORM GRID ────────────────────────────────────────────────── */
 .form-grid {
   display: grid;
@@ -488,7 +537,20 @@ body {
     </div>
   </div>
 
-  <!-- Filters -->
+  <!-- Top-level segment tabs -->
+  <div class="segment-bar" id="segment-bar">
+    <button class="segment-btn active" data-segment="competitor" onclick="setSegment('competitor',this)">
+      <span>Competitor Matchups</span><span class="segment-count" data-c="competitor"></span>
+    </button>
+    <button class="segment-btn" data-segment="account_intel" onclick="setSegment('account_intel',this)">
+      <span>Account Intel</span><span class="segment-count" data-c="account_intel"></span>
+    </button>
+    <button class="segment-btn" data-segment="operations" onclick="setSegment('operations',this)">
+      <span>Operations</span><span class="segment-count" data-c="operations"></span>
+    </button>
+  </div>
+
+  <!-- Filters (only relevant to Competitor segment) -->
   <div class="filter-bar" id="filter-bar">
     <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
     <div class="filter-sep"></div>
@@ -500,7 +562,13 @@ body {
     <span class="filter-count" id="filter-count"></span>
   </div>
 
-  <!-- Competitor sections -->
+  <!-- Search (Account Intel only) -->
+  <div class="search-bar" id="search-bar" style="display:none;">
+    <input type="text" id="search-input" placeholder="Search accounts…" oninput="renderActiveSegment()" autocomplete="off">
+    <span class="filter-count" id="search-count"></span>
+  </div>
+
+  <!-- Render target -->
   <div id="form-grid">
     <div class="state-row"><strong>Loading forms…</strong>Fetching from the admin API.</div>
   </div>
@@ -575,6 +643,7 @@ const FORM_PROMPTS = {
 // ── STATE ─────────────────────────────────────────────────────────────────
 let allForms = [];
 let activeFilter = 'all';
+let activeSegment = localStorage.getItem('oly-forms-segment') || 'competitor';
 
 // ── THEME ─────────────────────────────────────────────────────────────────
 const OLY_THEMES = ['theme-light','theme-dark','theme-brand','theme-navy'];
@@ -616,6 +685,20 @@ function competitorFromTitle(title) {
   return '';
 }
 
+// Classify each form into one of three top-level segments.
+function segmentOf(form) {
+  const t = (form.title || '').toLowerCase();
+  if (t.startsWith('account intel')) return 'account_intel';
+  // Anything matching one of the five competitor brands is a matchup verification form.
+  if (competitorFromTitle(form.title)) return 'competitor';
+  return 'operations';
+}
+
+// Account name from an Account Intel form title (strip prefix variations).
+function accountNameFromTitle(title) {
+  return String(title || '').replace(/^Account Intel\s*[—–\-]\s*/i, '').trim();
+}
+
 function formatDate(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString('en-ZA', { day:'numeric', month:'short', year:'numeric' });
@@ -639,35 +722,59 @@ function setOpenState(comp, isOpen) {
   localStorage.setItem('oly-forms-open', JSON.stringify(s));
 }
 
-function renderGrid(forms) {
+// Re-render based on currently active segment and current filters/search.
+function renderActiveSegment() {
   const grid = document.getElementById('form-grid');
+  const filterBar = document.getElementById('filter-bar');
+  const searchBar = document.getElementById('search-bar');
+
+  // Chrome visibility per segment.
+  filterBar.style.display  = activeSegment === 'competitor' ? '' : 'none';
+  searchBar.style.display  = activeSegment === 'account_intel' ? 'flex' : 'none';
+
+  const inSegment = allForms.filter(f => segmentOf(f) === activeSegment);
+
+  if (activeSegment === 'competitor') {
+    let filtered = inSegment;
+    if (activeFilter === 'has_responses') {
+      filtered = filtered.filter(f => (f.submission_count || 0) > 0);
+    } else if (activeFilter !== 'all') {
+      filtered = filtered.filter(f => categoryFromTitle(f.title) === activeFilter);
+    }
+    renderCompetitorGrid(grid, filtered);
+  } else if (activeSegment === 'account_intel') {
+    const q = (document.getElementById('search-input').value || '').trim().toLowerCase();
+    const filtered = q
+      ? inSegment.filter(f => accountNameFromTitle(f.title).toLowerCase().includes(q))
+      : inSegment;
+    renderAccountIntelList(grid, filtered);
+    document.getElementById('search-count').textContent =
+      `${filtered.length} of ${inSegment.length} account${inSegment.length === 1 ? '' : 's'}`;
+  } else {
+    renderOperationsList(grid, inSegment);
+  }
+}
+
+function renderCompetitorGrid(grid, forms) {
   if (!forms.length) {
-    grid.innerHTML = '<div class="state-row"><strong>No forms</strong>No forms match the current filter.</div>';
+    grid.innerHTML = '<div class="state-row"><strong>No forms</strong>No competitor matchups match the current filter.</div>';
     updateFilterCount(0);
     return;
   }
-
-  // Group by competitor
   const groups = {};
   forms.forEach(f => {
     const comp = competitorFromTitle(f.title) || 'Other';
-    if (!groups[comp]) groups[comp] = [];
-    groups[comp].push(f);
+    (groups[comp] = groups[comp] || []).push(f);
   });
-
   const compOrder = ['Africa Paints','Anetic','Crest','Excelsior','Golden Choice','Other'];
   const openState = getOpenState();
   const filterActive = activeFilter !== 'all';
   let html = '';
-
   compOrder.forEach(comp => {
     if (!groups[comp]) return;
     const items = groups[comp];
     const respTotal = items.reduce((s, f) => s + (f.submission_count || 0), 0);
-    // When a filter is active, auto-expand sections that contain matches so
-    // users never see an empty header with hidden results behind it.
-    const isOpen = filterActive ? true : (openState[comp] !== false && openState[comp] !== undefined ? openState[comp] : false);
-
+    const isOpen = filterActive ? true : (openState[comp] === true);
     html += `
       <section class="comp-section${isOpen ? ' open' : ''}" data-comp="${esc(comp)}">
         <button type="button" class="comp-header" onclick="toggleSection(this)">
@@ -679,15 +786,95 @@ function renderGrid(forms) {
           </span>
         </button>
         <div class="comp-body">
-          <div class="comp-grid">
-            ${items.map(renderCard).join('')}
-          </div>
+          <div class="comp-grid">${items.map(renderCard).join('')}</div>
         </div>
       </section>`;
   });
-
   grid.innerHTML = html;
   updateFilterCount(forms.length);
+}
+
+function renderAccountIntelList(grid, forms) {
+  if (!forms.length) {
+    grid.innerHTML = '<div class="state-row"><strong>No accounts</strong>No Account Intel forms match your search.</div>';
+    return;
+  }
+  const sorted = [...forms].sort((a, b) =>
+    accountNameFromTitle(a.title).localeCompare(accountNameFromTitle(b.title), undefined, { sensitivity: 'base' })
+  );
+  // Compact card grid — these are uniform-shape Account Intel forms; no per-account accordion needed.
+  grid.innerHTML = `<div class="comp-grid" style="padding-top:0;">${sorted.map(renderAccountCard).join('')}</div>`;
+}
+
+function renderAccountCard(form) {
+  const url = publicUrl(form);
+  const count = form.submission_count || 0;
+  const hasResp = count > 0;
+  const name = accountNameFromTitle(form.title);
+  return `
+    <div class="form-card" data-cat="account-intel">
+      <div class="form-card-accent" style="background:var(--_n500);"></div>
+      <div class="form-card-body">
+        <div class="form-card-eyebrow">${esc(form.id.slice(0,8))}…</div>
+        <div class="form-card-title">${esc(name)}</div>
+        <div class="form-card-meta">
+          <span class="badge badge-count${hasResp ? ' has-responses' : ''}">
+            ${count} ${count === 1 ? 'response' : 'responses'}
+          </span>
+        </div>
+      </div>
+      <div class="form-card-footer">
+        <a class="btn-open" href="${esc(url)}" target="_blank" rel="noopener">Open</a>
+        <button class="btn-copy" onclick="copyLink(this,'${esc(url)}')">Copy link</button>
+      </div>
+    </div>`;
+}
+
+function renderOperationsList(grid, forms) {
+  if (!forms.length) {
+    grid.innerHTML = '<div class="state-row"><strong>No operations forms</strong>Returns Intake, Merchandising Recording, etc. will appear here.</div>';
+    return;
+  }
+  const sorted = [...forms].sort((a, b) => a.title.localeCompare(b.title));
+  grid.innerHTML = `<div class="comp-grid" style="padding-top:0;">${sorted.map(renderOpsCard).join('')}</div>`;
+}
+
+function renderOpsCard(form) {
+  const url = publicUrl(form);
+  const count = form.submission_count || 0;
+  const hasResp = count > 0;
+  return `
+    <div class="form-card" data-cat="ops">
+      <div class="form-card-accent" style="background:var(--_ink);"></div>
+      <div class="form-card-body">
+        <div class="form-card-eyebrow">${esc(form.id.slice(0,8))}…</div>
+        <div class="form-card-title">${esc(form.title)}</div>
+        <div class="form-card-meta">
+          <span class="badge badge-count${hasResp ? ' has-responses' : ''}">
+            ${count} ${count === 1 ? 'response' : 'responses'}
+          </span>
+        </div>
+      </div>
+      <div class="form-card-footer">
+        <a class="btn-open" href="${esc(url)}" target="_blank" rel="noopener">Open</a>
+        <button class="btn-copy" onclick="copyLink(this,'${esc(url)}')">Copy link</button>
+      </div>
+    </div>`;
+}
+
+function setSegment(seg, btn) {
+  activeSegment = seg;
+  localStorage.setItem('oly-forms-segment', seg);
+  document.querySelectorAll('.segment-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderActiveSegment();
+}
+
+function updateSegmentCounts() {
+  const counts = { competitor: 0, account_intel: 0, operations: 0 };
+  allForms.forEach(f => { counts[segmentOf(f)] = (counts[segmentOf(f)] || 0) + 1; });
+  document.querySelectorAll('.segment-count').forEach(el => {
+    el.textContent = counts[el.dataset.c] || 0;
+  });
 }
 
 function toggleSection(btn) {
@@ -736,14 +923,7 @@ function setFilter(filter, btn) {
   activeFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  let filtered = allForms;
-  if (filter === 'has_responses') {
-    filtered = allForms.filter(f => (f.submission_count || 0) > 0);
-  } else if (filter !== 'all') {
-    filtered = allForms.filter(f => categoryFromTitle(f.title) === filter);
-  }
-  renderGrid(filtered);
+  renderActiveSegment();
 }
 
 function updateFilterCount(n) {
@@ -826,7 +1006,12 @@ async function init() {
         return a.title.localeCompare(b.title);
       });
 
-    renderGrid(allForms);
+    // Sync the segment button matching restored state.
+    document.querySelectorAll('.segment-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.segment === activeSegment);
+    });
+    updateSegmentCounts();
+    renderActiveSegment();
     document.getElementById('last-refreshed').textContent =
       `${allForms.length} active forms · refreshed ${new Date().toLocaleTimeString('en-ZA')}`;
   } catch (err) {
